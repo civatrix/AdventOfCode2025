@@ -24,6 +24,6 @@ L99
 R14
 L82
 """
-        XCTAssertEqual(day.run(input: input), "3")
+        XCTAssertEqual(day.run(input: input), "6")
     }
 }
