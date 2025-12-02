@@ -18,9 +18,13 @@ final class Day2: Day {
         }
         
         for range in ranges {
-            for candidate in range.map({ $0.description }) where candidate.count.isMultiple(of: 2) {
-                if candidate.prefix(candidate.count / 2) == candidate.suffix(candidate.count / 2) {
-                    sum += Int(candidate)!
+            for candidate in range.map({ $0.description }) where candidate.count > 1 {
+                for length in 1 ... candidate.count / 2 {
+                    let prefix = String(candidate.prefix(length))
+                    if String(repeating: prefix, count: candidate.count / length) == candidate {
+                        sum += Int(candidate)!
+                        break
+                    }
                 }
             }
         }
