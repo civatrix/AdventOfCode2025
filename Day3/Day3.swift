@@ -9,6 +9,16 @@ import Foundation
 
 final class Day3: Day {
     func run(input: String) -> String {
-        return ""
+        return input.lines
+            .map { $0.map { $0.wholeNumberValue! } }
+            .map { line in
+                let max = line.dropLast().max()!
+                let maxIndex = line.firstIndex(of: max)!
+                let nextMax = line.suffix(from: maxIndex + 1).max()!
+                
+                return max * 10 + nextMax
+            }
+            .sum
+            .description
     }
 }
