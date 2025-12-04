@@ -12,11 +12,15 @@ final class Day3: Day {
         return input.lines
             .map { $0.map { $0.wholeNumberValue! } }
             .map { line in
-                let max = line.dropLast().max()!
-                let maxIndex = line.firstIndex(of: max)!
-                let nextMax = line.suffix(from: maxIndex + 1).max()!
+                var total = 0
+                var lineSlice = line.dropFirst(0)
+                for offset in (0...11).reversed() {
+                    let max = lineSlice.dropLast(offset).max()!
+                    lineSlice = lineSlice.dropFirst(lineSlice.firstIndex(of: max)! - lineSlice.startIndex + 1)
+                    total = (total * 10) + max
+                }
                 
-                return max * 10 + nextMax
+                return total
             }
             .sum
             .description

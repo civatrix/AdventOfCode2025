@@ -18,6 +18,6 @@ final class Day3Tests: XCTestCase {
 234234234234278
 818181911112111
 """
-        XCTAssertEqual(day.run(input: input), "357")
+        XCTAssertEqual(day.run(input: input), "3121910778619")
     }
 }
