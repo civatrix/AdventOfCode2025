@@ -9,20 +9,19 @@ import Foundation
 
 final class Day5: Day {
     func run(input: String) -> String {
-        var ranges = [ClosedRange<Int>]()
-        var count = 0
+        var ranges = Set<ClosedRange<Int>>()
         for line in input.lines {
-            if line.contains("-") {
-                let range = line.bifurcate(on: "-")
-                ranges.append(Int(range.0)! ... Int(range.1)!)
-            } else {
-                let id = Int(line)!
-                if ranges.contains(where: { $0.fastContains(id) }) {
-                    count += 1
-                }
-            }
+            guard line.contains("-") else { break }
+            
+            let rawRange = line.bifurcate(on: "-")
+            let range = Int(rawRange.0)! ... Int(rawRange.1)!
+            let overlappingRanges = ranges.filter { $0.overlaps(range) }
+            ranges.subtract(overlappingRanges)
+            let rangeMin = min(range.lowerBound, overlappingRanges.map(\.lowerBound).min() ?? .max)
+            let rangeMax = max(range.upperBound, overlappingRanges.map(\.upperBound).max() ?? .min)
+            ranges.insert(rangeMin ... rangeMax)
         }
         
-        return count.description
+        return ranges.map { $0.count }.sum.description
     }
 }
