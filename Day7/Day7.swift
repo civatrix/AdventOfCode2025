@@ -11,18 +11,25 @@ final class Day7: Day {
     func run(input: String) -> String {
         let splitters = input.parseGrid(target: "^").sorted()
         let start = input.firstIndex(of: "S")!.utf16Offset(in: input)
-        var open: Set<Point> = [[start, 0]]
-        var splits = Set<Point>()
         
-        while let beam = open.popFirst() {
-            if let splitter = splitters.first(where: { $0.x == beam.x && $0.y > beam.y }) {
-                if splits.insert(splitter).inserted {
-                    open.insert(splitter + .left)
-                    open.insert(splitter + .right)
-                }
+        var cache: [Point: Int] = [:]
+        func paths(from beam: Point) -> Int {
+            if let cacheHit = cache[beam] {
+                return cacheHit
             }
+            
+            let total: Int
+            if let splitter = splitters.first(where: { $0.x == beam.x && $0.y > beam.y }) {
+                total = paths(from: splitter + .left) + paths(from: splitter + .right)
+            } else {
+                total = 1
+            }
+            
+            cache[beam] = total
+            return total
         }
         
-        return splits.count.description
+        let final = paths(from: [start, 0]).description
+        return final
     }
 }
