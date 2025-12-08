@@ -93,6 +93,14 @@ struct Point3D: Hashable, CustomStringConvertible, Comparable, Equatable, Expres
     func distance(to: Point3D) -> Int {
         abs(x - to.x) + abs(y - to.y) + abs(z - to.z)
     }
+    
+    func straightLineDistanceSquared(to: Point3D) -> Int {
+        let xDistance = (x - to.x)
+        let yDistance = (y - to.y)
+        let zDistance = (z - to.z)
+        
+        return xDistance * xDistance + yDistance * yDistance + zDistance * zDistance
+    }
 }
 
 struct Grid3DGraph: Graph {
