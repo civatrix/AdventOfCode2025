@@ -34,7 +34,6 @@ final class Day8Tests: XCTestCase {
 984,92,344
 425,690,689
 """
-        day.connections = 10
-        XCTAssertEqual(day.run(input: input), "40")
+        XCTAssertEqual(day.run(input: input), "25272")
     }
 }

@@ -8,8 +8,6 @@
 import Foundation
 
 final class Day8: Day {
-    var connections = 1000
-
     func run(input: String) -> String {
         let boxes = input.allDigits
             .chunks(ofCount: 3)
@@ -17,7 +15,6 @@ final class Day8: Day {
         let pairs = boxes.combinations(ofCount: 2)
             .map { ($0[0], $0[1]) }
             .sorted { $0.0.straightLineDistanceSquared(to: $0.1) < $1.0.straightLineDistanceSquared(to: $1.1) }
-            .prefix(connections)
         
         var circuits = Set<Set<Point3D>>()
         for pair in pairs {
@@ -35,13 +32,12 @@ final class Day8: Day {
             } else {
                 circuits.insert([pair.0, pair.1])
             }
+            
+            if circuits.count == 1 && circuits.first!.count == boxes.count {
+                return (pair.0.x * pair.1.x).description
+            }
         }
 
-        return circuits
-            .map { $0.count }
-            .sorted()
-            .suffix(3)
-            .reduce(1, *)
-            .description
+        return "No solution found"
     }
 }
