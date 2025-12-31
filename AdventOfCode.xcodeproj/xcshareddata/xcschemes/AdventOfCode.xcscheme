@@ -81,12 +81,12 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-d 1"
-            isEnabled = "NO">
+            argument = "-d 9"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-y 2024"
-            isEnabled = "NO">
+            argument = "-y 2025"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-c $(SESSION_COOKIE)"

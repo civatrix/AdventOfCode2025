@@ -116,6 +116,13 @@ public struct Point: Hashable, CustomStringConvertible, Comparable, Equatable, E
 }
 
 extension Collection<Point> {
+    func compressPoints() -> [Point] {
+        let xes = Set<Int>(map(\.x)).sorted()
+        let ys = Set<Int>(map(\.y)).sorted()
+
+        return map { [xes.firstIndex(of: $0.x)!, ys.firstIndex(of: $0.y)!] }
+    }
+
     func printPoints(current: Point? = nil, path: [Point] = []) {
         var string = ""
         let xRange = map(\.x).minAndMax()!

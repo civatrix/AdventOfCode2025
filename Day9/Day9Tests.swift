@@ -23,6 +23,6 @@ final class Day9Tests: XCTestCase {
 7,3
 
 """
-        XCTAssertEqual(day.run(input: input), "50")
+        XCTAssertEqual(day.run(input: input), "24")
     }
 }
