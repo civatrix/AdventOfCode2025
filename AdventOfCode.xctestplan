@@ -23,8 +23,6 @@
     {
       "parallelizable" : true,
       "skippedTests" : [
-        "Day10Tests",
-        "Day10Tests\/testDay()",
         "Day11Tests",
         "Day11Tests\/testDay()",
         "Day12Tests",
@@ -43,7 +41,9 @@
         "Day7Tests",
         "Day7Tests\/testDay()",
         "Day8Tests",
-        "Day8Tests\/testDay()"
+        "Day8Tests\/testDay()",
+        "Day9Tests",
+        "Day9Tests\/testDay()"
       ],
       "target" : {
         "containerPath" : "container:AdventOfCode.xcodeproj",
