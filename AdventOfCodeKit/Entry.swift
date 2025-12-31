@@ -57,7 +57,7 @@ public func run(_ day: String?, _ year: String?, _ cookie: String?) async {
     let url = inputUrl(for: day)
     
     let input: String
-    if let fileInput = try? String(contentsOf: url), !fileInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+    if let fileInput = try? String(contentsOf: url, encoding: .utf8), !fileInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
         input = fileInput
     } else if let year, let cookie, let netInput = await downloadInput(for: day, year: year, cookie: cookie) {
         input = netInput
