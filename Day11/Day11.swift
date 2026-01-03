@@ -15,12 +15,26 @@ final class Day11: Day {
             connections[String(items[0].dropLast())] = Set(items.dropFirst())
         }
         
-        return route(from: "you", connections: connections).count.description
+        let serverToDac = routes(from: "svr", to: "dac", connections: connections)
+        let dacToFft = routes(from: "dac", to: "fft", connections: connections)
+        let fftToOut = routes(from: "fft", to: "out", connections: connections)
+        let serverToFft = routes(from: "svr", to: "fft", connections: connections)
+        let fftToDac = routes(from: "fft", to: "dac", connections: connections)
+        let dacToOut = routes(from: "dac", to: "out", connections: connections)
+        
+        return ((serverToDac * dacToFft * fftToOut) + (serverToFft * fftToDac * dacToOut)).description
     }
     
-    func route(from: String, connections: [String: Set<String>]) -> Set<Set<String>> {
-        if from == "out" { return [["out"]] }
+    var cache: [String: [String: Int]] = [:]
+    func routes(from: String, to: String, connections: [String: Set<String>]) -> Int {
+        if let cacheHit = cache[from]?[to] {
+            return cacheHit
+        }
         
-        return Set(connections[from]!.flatMap { route(from: $0, connections: connections).map { $0.union([from]) } })
+        if from == to { return 1 }
+        
+        let result = connections[from, default: []].map { routes(from: $0, to: to, connections: connections) }.sum
+        cache[from, default: [:]][to] = result
+        return result
     }
 }
