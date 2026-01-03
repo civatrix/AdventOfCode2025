@@ -23,8 +23,8 @@
     {
       "parallelizable" : true,
       "skippedTests" : [
-        "Day11Tests",
-        "Day11Tests\/testDay()",
+        "Day10Tests",
+        "Day10Tests\/testDay()",
         "Day12Tests",
         "Day1Tests",
         "Day1Tests\/testDay()",
