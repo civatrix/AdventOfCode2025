@@ -19,3 +19,13 @@ func greatestCommonDenominator(_ x: Int, _ y: Int) -> Int {
         return greatestCommonDenominator(y, remainder)
     }
 }
+
+extension Int {
+    var isOdd: Bool {
+        self & 1 == 1
+    }
+    
+    var isEven: Bool {
+        self & 1 == 0
+    }
+}

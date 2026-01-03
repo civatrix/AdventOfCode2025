@@ -38,9 +38,10 @@ final class Day10: Day {
             }
         } transform: { transformButtons($0) }
     }
+
     static func transformButtons(_ input: Substring) -> [[Int]] {
         var output = [[Int]]()
-        
+
         var current = [Int]()
         for character in input {
             switch character {
@@ -54,7 +55,7 @@ final class Day10: Day {
                 current.append(number)
             }
         }
-        
+
         return output
     }
 
@@ -76,28 +77,80 @@ final class Day10: Day {
     func run(input: String) -> String {
         input.lines.map { line in
             let match = try! Self.regex.wholeMatch(in: line)!
-            let lights = match[Self.lightsRef]
             let buttons = match[Self.buttonsRef]
-            return calculatePresses(lights: lights, buttons: buttons)
+            let joltages = match[Self.joltagesRef]
+            return calculatePresses(configuration: .init(joltages: joltages, buttons: buttons))
         }
         .sum
         .description
     }
-    
-    func calculatePresses(lights: [Bool], buttons: [[Int]]) -> Int {
-        for length in 1 ... buttons.count {
-            for permuatation in buttons.permutations(ofCount: length) {
-                let output = permuatation.reduce(into: [Bool](repeating: false, count: lights.count)) { result, buttons in
+
+    struct JoltageConfiguration: Hashable {
+        let joltages: [Int]
+        let buttons: [[Int]]
+    }
+
+    var joltageCache: [JoltageConfiguration: Int] = [:]
+    func calculatePresses(configuration: JoltageConfiguration) -> Int {
+        if let cacheHit = joltageCache[configuration] {
+            return cacheHit
+        }
+        let joltages = configuration.joltages
+        let buttons = configuration.buttons
+        if joltages.allSatisfy({ $0 == 0 }) {
+            joltageCache[configuration] = 0
+            return 0
+        }
+        if joltages.contains(where: { $0 < 0 }) {
+            joltageCache[configuration] = 100_000
+            return 100_000
+        }
+        let combinations = allCombinations(configuration: .init(lights: joltages.map(\.isOdd), buttons: buttons))
+        var result = 100_000
+        for combination in combinations {
+            let newJoltages = combination.reduce(into: joltages) { result, buttons in
+                for button in buttons {
+                    result[button] -= 1
+                }
+            }
+            .map { $0 / 2 }
+            let newResult = calculatePresses(configuration: .init(joltages: newJoltages, buttons: buttons))
+            result = min(result, (2 * newResult) + combination.count)
+        }
+        joltageCache[configuration] = result
+        return result
+    }
+
+    struct LightConfiguration: Hashable {
+        let lights: [Bool]
+        let buttons: [[Int]]
+    }
+
+    var lightCache: [LightConfiguration: [[[Int]]]] = [:]
+    func allCombinations(configuration: LightConfiguration) -> [[[Int]]] {
+        if let cacheHit = lightCache[configuration] {
+            return cacheHit
+        }
+        let lights = configuration.lights
+        let buttons = configuration.buttons
+        var result = [[[Int]]]()
+        if lights.allSatisfy(!) {
+            result.append([])
+        }
+        for length in 1...buttons.count {
+            for combination in buttons.combinations(ofCount: length) {
+                let output = combination.reduce(into: lights) { result, buttons in
                     for button in buttons {
                         result[button].toggle()
                     }
                 }
-                if output == lights {
-                    return length
+                if output.allSatisfy(!) {
+                    result.append(combination)
                 }
             }
         }
-        
-        fatalError("Unable to find a solution")
+
+        lightCache[configuration] = result
+        return result
     }
 }
