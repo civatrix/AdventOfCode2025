@@ -25,7 +25,8 @@
       "skippedTests" : [
         "Day10Tests",
         "Day10Tests\/testDay()",
-        "Day12Tests",
+        "Day11Tests",
+        "Day11Tests\/testDay()",
         "Day1Tests",
         "Day1Tests\/testDay()",
         "Day2Tests",
